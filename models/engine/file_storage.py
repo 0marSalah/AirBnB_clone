@@ -4,6 +4,7 @@
 import json
 from models.base_model import BaseModel
 
+
 class FileStorage:
     __file_path = "file.json"
     __objects = {}
@@ -16,9 +17,9 @@ class FileStorage:
         if obj:
             key = '{}.{}'.format(obj.__class__.__name__, obj.id)
             self.__objects[key] = obj
-    
+
     def save(self):
-        """Serialize __objects to the JSON file __file_path.""" 
+        """Serialize __objects to the JSON file __file_path."""
         obj_dict = {}
 
         for key, obj in self.__objects.items():
