@@ -2,15 +2,17 @@
 """ Console Module """
 
 import cmd
-from models.base_model import BaseModel
 from models import storage
+
+from models.base_model import BaseModel
+from models.user import User
 
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
     prompt = "(hbnb) "
-    classes = {'BaseModel': BaseModel}
+    classes = {'BaseModel': BaseModel, 'User': User}
 
     def do_create(self, arg):
         """ Create a new instance """
