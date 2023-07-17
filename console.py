@@ -6,13 +6,27 @@ from models import storage
 
 from models.base_model import BaseModel
 from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
+from models.place import Place
 
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
     prompt = "(hbnb) "
-    classes = {'BaseModel': BaseModel, 'User': User}
+    classes = {
+        "BaseModel": BaseModel,
+
+        "User": User,
+        "City": City,
+        "State": State,
+        "Review": Review,
+        "Place": Place,
+        "Amenity": Amenity
+    }
 
     def do_create(self, arg):
         """ Create a new instance """
