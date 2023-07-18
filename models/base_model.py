@@ -5,14 +5,17 @@ import uuid
 from datetime import datetime
 import models
 
+
 class BaseModel:
     """Represents the BaseModel of the HBnB project."""
+
     def __init__(self, *args, **kwargs):
         """ Initializes the BaseModel instance."""
         if kwargs:
             for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
-                    setattr(self, key, datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f"))
+                    setattr(self, key, datetime.strptime(
+                        value, "%Y-%m-%dT%H:%M:%S.%f"))
                 elif key != "__class__":
                     setattr(self, key, value)
             if "id" not in kwargs.keys():
@@ -31,7 +34,7 @@ class BaseModel:
         """Return the print/str representation of the BaseModel instance."""
         clname = self.__class__.__name__
         return "[{}] ({}) {}".format(clname, self.id, self.__dict__)
-    
+
     def save(self):
         """Update updated_at with the current datetime."""
         self.updated_at = datetime.today()
