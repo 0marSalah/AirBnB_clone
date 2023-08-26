@@ -12,7 +12,6 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-import shlex
 
 
 def parse(arg):
@@ -60,41 +59,42 @@ class HBNBCommand(cmd.Cmd):
         """Do nothing upon receiving an empty line."""
         pass
 
-    def _key_value_parser(self, args):
-        """creates a dictionary from a list of strings"""
-        new_dict = {}
-        for arg in args:
-            if "=" in arg:
-                kvp = arg.split('=', 1)
-                key, value = kvp[0], kvp[1]
-                if value[0] == value[-1] == '"':
-                    value = shlex.split(value)[0].replace('_', ' ')
-
-                else:
-                    try:
-                        value = int(value)
-                    except:
-                        try:
-                            value = float(value)
-                        except:
-                            continue
-                new_dict[key] = value
-        return new_dict
-
     def do_create(self, arg):
-        """Creates a new instance of a class"""
-        args = arg.split()
-        if len(args) == 0:
+        """Usage: create <class name> <param 1> <param 2> <param 3>...
+        Create a new class instance with given parameters and print its id."""
+
+        if len(arg) == 0:
             print("** class name missing **")
-            return False
-        if args[0] in classes:
-            new_dict = self._key_value_parser(args[1:])
-            instance = classes[args[0]](**new_dict)
-        else:
+            return
+
+        arg_list = arg.split()
+        class_name = arg_list[0]
+        if class_name not in self.classes.keys():
             print("** class doesn't exist **")
-            return False
-        print(instance.id)
-        instance.save()
+            return
+
+        # Remove the class name from the argument list
+        arg_list = arg_list[1:]
+
+        # Prepare parameters dictionary
+        params = {}
+        for param in arg_list:
+            parts = param.split("=")
+            if len(parts) != 2:
+                continue
+            key, value = parts
+            # Remove double quotes and replace underscores with spaces
+            if value.startswith('"') and value.endswith('"'):
+                value = value[1:-1].replace("_", " ")
+            # Convert value types if needed
+            if "." in value:
+                try:
+                    value = float(value)
+                except ValueError:
+                    continue
+            elif value.isdigit():
+                value = int(value)
+            params[key] = value
 
         # Create an instance with the given parameters
         new_instance = self.classes[class_name](**params)
