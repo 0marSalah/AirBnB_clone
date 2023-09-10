@@ -3,9 +3,7 @@
 Fabric script that generates a tgz
 """
 
-from datetime import datetime
-from fabric.api import local
-from os.path import isdir
+from fabric.api import *
 
 
 def do_pack():
